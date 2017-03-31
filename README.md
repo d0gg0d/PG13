@@ -24,5 +24,7 @@ Future Upgrades:
 	-Return the name of the Domain used by the Exchange Server and quit
 	-Return the name of the Domain used by the Exchange Server and prepend to the userlist
 	-Threading
+	-Display all hits at the end
+	-Indicate when guessing is done
 
 If you have any tips for improvements, please message me or write an issue post.
