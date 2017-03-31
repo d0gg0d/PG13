@@ -24,9 +24,6 @@ class owa_bruteforce():
 		self.list = ('rpc', 'ews', 'public')
 		self.list_position = 0
 
-		print(self.tries_max)
-		print(wait)
-
 		def disp_check_result(self, httpquestion):
 			if "401" in httpquestion and self.list[self.list_position] == 'rpc':
 				print('\033[92m'+'[+]'+'\033[0m'+'{}'.format(self.list[self.list_position]))
@@ -96,6 +93,7 @@ class owa_bruteforce():
 						for user_line in users:
 							user = self.CleanInput(user_line)
 							answer = self.attempt_guess(user, passw)
+							time.sleep(.75)
 							if answer != None and self.output != None:
 								answer = answer + '\r\n'
 								outfile.write(answer)
