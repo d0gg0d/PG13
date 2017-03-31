@@ -25,15 +25,15 @@ class owa_bruteforce():
 		self.list_position = 0
 
 		def disp_check_result(self, httpquestion):
-			if "401" in httpquestion and self.list[self.list_position] == 'rpc':
+			if "401 Unauthorized" in httpquestion and self.list[self.list_position] == 'rpc':
 				print('\033[92m'+'[+]'+'\033[0m'+'{}'.format(self.list[self.list_position]))
 				logging.info('====RPC AVAILABLE====')
 				self.rpc_status = 1
-			elif "401" in httpquestion and self.list[self.list_position] == 'ews':
+			elif "401 Unauthorized" in httpquestion and self.list[self.list_position] == 'ews':
 				print('\033[92m'+'[+]'+'\033[0m'+'{}'.format(self.list[self.list_position]))
 				logging.info('====EWS AVAILABLE====')
 				self.ews_status = 1
-			elif "404" in httpquestion and self.list[self.list_position] == 'public':
+			elif "404 Not Found" in httpquestion and self.list[self.list_position] == 'public':
 				print('\033[92m'+'[+]'+'\033[0m'+'{}'.format(self.list[self.list_position]))
 				logging.info('====PUBLIC AVAILABLE====')
 				self.public_status = 1
